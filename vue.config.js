@@ -4,7 +4,7 @@ const Moment = require('moment')
 module.exports = {
   publicPath: './',
   productionSourceMap: false, // 不产出 .map 文件
-  outputDir: '../diary',
+  outputDir: '../wubi-dict-editor-web',
   configureWebpack: config => {
     if (process.env.NODE_ENV === 'production'){
       let packTimeString = new Moment().format('YYYYMMDDHHmmss') // 打包时间
