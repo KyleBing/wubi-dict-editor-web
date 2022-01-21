@@ -286,6 +286,9 @@ export default {
             this.words = [...this.dict.wordsOrigin]
         },
         addNewWord(){
+            if (!this.dict.hasOwnProperty('wordsOrigin')){
+                this.dict = new DictOther('临时 jtjf', '临时文件.txt', '临时文件.txt', this.seperatorRead, this.dictFormatRead)
+            }
             if (!this.word){
                 shakeDomFocus(this.$refs.domInputWord)
             } else if (!this.code){
@@ -542,6 +545,7 @@ export default {
             if (this.dict && this.dict.wordsOrigin.length > 0){
                 wordsSelected = this.dict.wordsOrigin.filter(item => this.chosenWordIds.has(item.id))
                 if (wordsSelected.length < 1){
+                    shakeDomFocus(this.$refs.domBtnExportPlist)
                     this.tipNotice('未选择任何词条')
                     return
                 }

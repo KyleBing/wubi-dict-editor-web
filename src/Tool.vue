@@ -155,7 +155,7 @@
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
-                                <div class="btn btn-cyan" @click="exportSelectionToPlist">导出选中词条到 plist 文件</div>
+                                <div ref="domBtnExportPlist" class="btn btn-cyan" @click="exportSelectionToPlist">导出选中词条到 plist 文件</div>
                             </div>
                         </div>
                     </div>
@@ -164,14 +164,14 @@
                 <hr>
 
                 <!-- 编码处理-->
-                <section>
+<!--                <section>
                     <div class="title">编码生成</div>
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn  btn-primary center" @click="generateCodeForAllWords">生成所有词条的编码</div>
                         </div>
                     </div>
-                </section>
+                </section>-->
                 <!--            <section>
                                 <div class="title">编码查错</div>
                                 <div class="content">
