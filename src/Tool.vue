@@ -223,9 +223,7 @@
                 </section>
             </div>
 
-
             <!-- 主词条列表  -->
-
             <div class="list-container">
                 <div class="group">
                     <recycle-scroller
@@ -275,7 +273,7 @@
                     <div class="link" ref="domBtnSelectAll" @click="selectAll">全选</div>
                     <div class="link" @click="resetInputs">清选</div>
                     <div class="link" @click="sort">排序</div>
-                    <div class="link origin" @click="openCurrentYaml">{{ dict.fileName }}</div>
+                    <div class="link origin" @click="openFileInNewTab">{{ dict.fileName }}</div>
                 </div>
                 <div class="info-list">
                     <div class="count">总<span class="number">{{dict.countDictOrigin}}</span></div>

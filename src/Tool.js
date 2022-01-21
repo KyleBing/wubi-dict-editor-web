@@ -7,10 +7,10 @@ import DictMap from './lib/DictMap'
 import Word from './lib/Word'
 
 import path from 'path'
-import VirtualScroller from 'vue-virtual-scroller'
+import { RecycleScroller } from 'vue-virtual-scroller'
 
 export default {
-    components: {RecycleScroller: VirtualScroller.RecycleScroller},
+    components: {RecycleScroller: RecycleScroller},
     data() {
         return {
             IS_IN_DEVELOP: IS_IN_DEVELOP, // 是否为开发模式，html 使用
@@ -140,6 +140,7 @@ export default {
                 this.filePath = file.name
                 this.fileName = file.name
                 this.dict = new DictOther(this.fileContent, this.fileName, this.filePath, this.seperatorRead, this.dictFormatRead)
+                this.words = this.dict.wordsOrigin
                 this.fileNameSave = this.filePathSave()
                 this.tipNotice('载入完成')
                 // 载入新码表时，清除 word 保存 code
@@ -529,8 +530,9 @@ export default {
             this.targetDict = {} // 清空次码表
         },
         // 打开当前码表源文件
-        openCurrentYaml(){
-            ipcRenderer.send('openFileOutside', this.dict.fileName)
+        openFileInNewTab(){
+            let win = window.open()
+            win.document.write(`<pre>${this.fileContent}</pre>`)
         },
 
         // 导出选中词条到 plist 文件
