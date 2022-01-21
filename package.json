@@ -11,7 +11,8 @@
     "core-js": "^2.6.5",
     "vue": "^2.6.10",
     "moment": "^2.29.1",
-    "vue-virtual-scroller": "^1.0.10"
+    "vue-virtual-scroller": "^1.0.10",
+    "plist": "^3.0.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.12.0",

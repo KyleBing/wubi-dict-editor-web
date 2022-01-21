@@ -5,9 +5,9 @@ import Dict from './lib/Dict'
 import DictOther from './lib/DictOther'
 import DictMap from './lib/DictMap'
 import Word from './lib/Word'
-
 import path from 'path'
 import { RecycleScroller } from 'vue-virtual-scroller'
+import plist from "plist";
 
 export default {
     components: {RecycleScroller: RecycleScroller},
@@ -140,16 +140,25 @@ export default {
                 this.filePath = file.name
                 this.fileName = file.name
                 this.dict = new DictOther(this.fileContent, this.fileName, this.filePath, this.seperatorRead, this.dictFormatRead)
-                this.words = this.dict.wordsOrigin
                 this.fileNameSave = this.filePathSave()
                 this.tipNotice('载入完成')
                 // 载入新码表时，清除 word 保存 code
                 this.word = ''
                 this.refreshShowingWords()
 
-                ipcRenderer.send('loadMainDict') // 请求主码表文件
+                // ipcRenderer.send('loadMainDict') // 请求主码表文件 // TODO: 码表字典文件
             }
             reader.readAsText(file)
+        },
+
+        // 重新载入文件内容
+        reloadFileContent(){
+            this.dict = new DictOther(this.fileContent, this.fileName, this.filePath, this.seperatorRead, this.dictFormatRead)
+            this.fileNameSave = this.filePathSave()
+            this.tipNotice('载入完成')
+            // 载入新码表时，清除 word 保存 code
+            this.word = ''
+            this.refreshShowingWords()
         },
 
         tipNotice(msg){
@@ -181,8 +190,7 @@ export default {
             this.tipNotice('编码生成完成')
         },
         // 生成保存文件的文件名
-        filePathSave(withFullPath){
-            let filePathObject = path.parse(this.filePath)
+        filePathSave(){
             let type = ''
             switch (this.dictFormatSave){
                 case 'cww': type = '一码多词';break;
@@ -195,14 +203,7 @@ export default {
                 case ' ': seperater = '空格分隔';break;
                 case '\t': seperater = 'Tab分隔';break;
             }
-            if (withFullPath){
-                return path.join(
-                    filePathObject.dir,
-                    filePathObject.name + '_' + type + '_' + seperater + filePathObject.ext
-                )
-            } else {
-                return filePathObject.name + '_' + type + '_' + seperater + filePathObject.ext
-            }
+            return type + '_' + seperater + '_' + this.dict.fileName
         },
 
         // 筛选词条字数
@@ -270,7 +271,7 @@ export default {
             let startPoint = new Date().getTime()
             if (this.code || this.word){
                 this.words = this.dict.wordsOrigin.filter(item => { // 获取包含 code 的记录
-                    item.code.includes(this.code) && item.word.includes(this.word)
+                    return item.code.includes(this.code) && item.word.includes(this.word)
                 })
                 log(`${this.code} ${this.word}: ` ,'搜索出', this.words.length, '条，', '用时: ', new Date().getTime() - startPoint, 'ms')
             } else { // 如果 code, word 为空，恢复原有数据
@@ -299,19 +300,18 @@ export default {
         saveToFile(dict, isSaveToOriginalFilePath){
             if (this.dict.lastIndex >= 1){ // 以 dict 的 lastIndex 作为判断有没有加载码表的依据
                 if (isSaveToOriginalFilePath){ // 保存到原来文件，针对工具里打开的文件，和词条移动的目标文件
-                    log('保存文件路径： ', dict.filePath)
-                    ipcRenderer.send(
-                        'ToolWindow:SaveFile',
+                    this.downloadFile(
                         dict.filePath,
-                        dict.toYamlString())
+                        dict.toYamlString()
+                    )
                 } else { // 保存成新文件，新文件名，只针对工具里打开的码表
-                    log('保存文件路径： ', this.filePathSave(true))
-                    ipcRenderer.send(
-                        'ToolWindow:SaveFile',
-                        this.filePathSave(true),
-                        this.dict.toExportString(this.seperatorSave, this.dictFormatSave))
+                    this.downloadFile(
+                        this.filePathSave(),
+                        this.dict.toExportString(this.seperatorSave, this.dictFormatSave)
+                    )
                 }
             } else {
+                this.tipNotice('未加载任何码表文件')
                 log('未加载任何码表文件')
             }
         },
@@ -533,6 +533,7 @@ export default {
         openFileInNewTab(){
             let win = window.open()
             win.document.write(`<pre>${this.fileContent}</pre>`)
+            win.document.title = this.dict.fileName
         },
 
         // 导出选中词条到 plist 文件
@@ -540,10 +541,31 @@ export default {
             let wordsSelected = [] // 被选中的 [Word]
             if (this.dict && this.dict.wordsOrigin.length > 0){
                 wordsSelected = this.dict.wordsOrigin.filter(item => this.chosenWordIds.has(item.id))
-                ipcRenderer.send('ToolWindow:ExportSelectionToPlistFile', wordsSelected)
+                if (wordsSelected.length < 1){
+                    this.tipNotice('未选择任何词条')
+                    return
+                }
+                let wordsProcessed = wordsSelected.map(item => {
+                    return {
+                        phrase: item.word,
+                        shortcut: item.code
+                    }
+                })
+                let plistContentString = plist.build(wordsProcessed)
+                this.downloadFile(this.dict.fileName + '.plist', plistContentString)
             } else {
                 this.tipNotice('没有任何词条')
             }
+        },
+
+        downloadFile(fileName, data) { // 下载 base64 图片
+            let aLink = document.createElement('a')
+            let blob = new Blob([data]); //new Blob([content])
+            let evt = document.createEvent("HTMLEvents")
+            evt.initEvent("click", true, true); //initEvent 不加后两个参数在FF下会报错  事件类型，是否冒泡，是否阻止浏览器的默认行为
+            aLink.download = fileName
+            aLink.href = URL.createObjectURL(blob)
+            aLink.click()
         },
     },
     watch: {

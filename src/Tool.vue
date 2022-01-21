@@ -66,7 +66,7 @@
                             </label>
 
                             <div class="btn-item ml-2">
-                                <div class="btn btn-primary" @click="checkRepetition(true)">重新载入</div>
+                                <div class="btn btn-primary" @click="reloadFileContent">重新载入</div>
                             </div>
                         </div>
                     </div>
@@ -137,7 +137,7 @@
                         </div>
                         <!--  保存-->
                         <div class="load-list mb-2">
-                            <div v-if="fileNameSave" class="btn btn-orange btn-load btn-ellipsis center">{{ fileNameSave }}</div>
+                            <div class="btn btn-orange btn-load btn-ellipsis center">{{ fileNameSave || '---' }}</div>
                             <div
                                 :class="[
                                     'btn', 'center', 'btn-reload',
@@ -145,16 +145,6 @@
                                     {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
                                 ref="domBtnSave"
                                 @click="saveToFile(dict)"> {{ labelOfSaveBtn }}
-                            </div>
-                        </div>
-                        <div>
-                            <div
-                                :class="[
-                            'btn', 'center',
-                            {'btn-green': labelOfSaveBtn === '保存成功'},
-                            {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
-                                ref="domBtnSave"
-                                @click="saveToFile(dict, true)"> 保存到源文件
                             </div>
                         </div>
                     </div>
