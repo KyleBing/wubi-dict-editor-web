@@ -1,0 +1,54 @@
+.footer{
+  background-color: $bg-panel;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  border-top: 1px solid $border-color;
+  padding: 5px 15px;
+  font-size: $fz-button;
+  display: flex;
+  justify-content: space-between;
+  color: $text-main;
+
+  .tip{
+    color: $green;
+  }
+
+  .footer-toolbar{
+    > *{
+      margin-right: 30px;
+      white-space: nowrap;
+    }
+    display: flex;
+    justify-content: flex-start;
+    .link-list{
+      .link{
+        @extend .unselectable;
+        margin-right: 12px;
+        cursor: pointer;
+        transition: all 0.3s;
+        &:hover{
+          transition: all 0.1s;
+          color: $color-main;
+        }
+      }
+      .origin{
+        font-weight: bold;
+        //@extend .font-roboto-regular;
+      }
+      display: flex;
+      justify-content: flex-start;
+    }
+    .info-list{
+      .number{
+        @extend .font-roboto-regular;
+        margin-left: 2px;
+      }
+      > *{
+        margin-right: 10px;
+      }
+      display: flex;
+      justify-content: flex-start;
+    }
+  }
+}

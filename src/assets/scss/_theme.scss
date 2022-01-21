@@ -1,0 +1,416 @@
+$black-color-border-highlight: lighten(black, 22%);
+$black-body-bg: #0f0f13;
+$black-bg: #1c1f24;
+$black-bg-hover: lighten(#1c1f24, 5%);
+$black-bg-highlight: #383f4a;
+$black-bg-active: lighten($black-bg-highlight, 15%);
+$black-color-border: lighten($black-bg, 5%);
+$black-color-text: lighten(black, 90%);
+$black-color-text-info: lighten(black, 65%);
+$black-color-text-subtitle: lighten(black, 70%);
+$black-color-text-comment: lighten(black, 55%);
+$black-btn-bg: lighten(black, 25%);
+$black-btn-bg-hover: lighten(black, 40%);
+$black-color-main: #81fffa;
+
+@mixin dark-mode(){
+  // 暗黑模式下的滚动条样式
+  ::-webkit-scrollbar {
+  }
+  ::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  ::-webkit-scrollbar-thumb {
+    border-color: lighten($black-color-border-highlight, 10%);
+    background-color: $black-color-border-highlight !important;  }
+  body {
+    background-color: $black-bg !important;
+  }
+  .list-container {
+  }
+  .search-bar {
+    background-color: $black-bg;
+    border-bottom-color: $black-color-border;
+  }
+  .input-item {
+    .btn-clear {
+      background-color: $black-bg-highlight;
+      &:hover{
+        background-color: $color-main;
+      }
+    }
+  }
+
+  // index
+  .main-tool{
+    border-color: $black-color-border;
+    .tool-panel{
+      border-right-color: $black-color-border;
+      background-color: $black-bg;
+      .title{
+        color: $black-color-text;
+      }
+      .content{
+        background-color: $black-body-bg;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border: none;
+        background-color: $black-color-border-highlight;
+      }
+    }
+  }
+
+  .modal{
+    background-color: rgba(255,255,255,0.2);
+  }
+
+  .modal-panel{
+    border-color: $black-color-border-highlight;
+    background-color: $black-bg;
+    .modal-close{
+      background-color: transparentize(white, 0.9);
+      &:hover{
+        background-color: transparentize(white, 0.7);
+      }
+    }
+    .modal-header{
+      border-color: $black-color-border;
+      background-color: $black-bg;
+      color: $black-color-text;
+    }
+    .modal-body{
+      label{
+        color: white;
+      }
+      input{
+        border-color: $black-color-border-highlight ;
+        width: 100%;
+        &:focus{
+          border-color: $black-color-main;
+        }
+      }
+    }
+    .modal-footer{
+      border-color: $black-color-border;
+      background-color: $black-bg;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+
+  .group {
+    color: $black-color-text;
+    .group-header {
+      color: $black-color-main;
+      &:hover {
+        background-color: $black-bg-hover;
+      }
+      &.active {
+        background-color: $black-bg-highlight;
+      }
+    }
+  }
+  .operation{
+    .up, .down{
+    }
+  }
+  .word-item {
+    &:hover {
+      background: $black-bg-hover;
+      .checkbox-cell {
+        label {
+          border-color: $black-color-main;
+        }
+      }
+    }
+    &:after {
+      background-color: $black-color-border;
+    }
+    .code {
+      color: $black-color-text-subtitle;
+    }
+    .word {
+    }
+    .operation {
+      .up, .down{
+        &:hover{
+          background-color: $black-bg-highlight;
+        }
+        &:active{
+          background-color: $black-bg-active;
+        }
+      }
+    }
+  }
+  .catalog-list {
+    color: $black-color-text;
+    border-right-color: $black-color-border !important;
+    .catalog-item {
+      &:hover {
+        background-color: $black-bg-hover !important;
+      }
+      &.active {
+        color: black !important;
+        background-color: $black-color-main !important;
+      }
+    }
+  }
+  .schema-list {
+    color: $black-color-text;
+    border-right-color: $black-color-border !important;
+    .schema-list-item {
+      &:hover {
+        background-color: $black-bg-hover !important;
+      }
+      &.active {
+        color: black !important;
+        background-color: $black-color-main !important;
+      }
+    }
+  }
+  .footer {
+    background-color: $black-bg;
+    border-top-color: $black-color-border-highlight;
+    color: $black-color-text;
+    .link {
+      &:hover {
+        color: $black-color-main !important;
+      }
+    }
+  }
+  .dropdown {}
+  .shadow{
+    @include box-shadow(1px 2px 5px rgba(0,0,0,0.5))
+  }
+  .file-list {
+    color: $black-color-text;
+    background-color: $black-bg;
+    border-color: #00448e;
+    &-item {
+      border-bottom-color: $black-color-border;
+      &:hover {
+        background-color: $black-bg-highlight;
+      }
+      &.active, &:active {
+        background-color: $blue;
+        color: white;
+      }
+    }
+  }
+  .checkbox-cell{
+    .checkbox-item{
+      background-color: $black-bg-highlight;
+      border-color: $black-bg-highlight;
+    }
+  }
+
+  /*CONFIG*/
+  .config {
+    section {
+      margin-bottom: 30px;
+      .section-title {
+        color: $black-color-text;
+        .desc {
+          color: $black-color-text-subtitle;
+        }
+      }
+      .section-content {
+        background-color: $black-body-bg;
+        color: $black-color-text;
+      }
+    }
+  }
+  .config-file-list {
+    .config-file-list-item {
+      border-bottom-color: $black-color-border;
+      .name {
+        color: $black-color-text;
+      }
+      .path {
+        color: $black-color-text-subtitle;
+      }
+      &.active {
+        background-color: $black-color-main;
+        border-bottom-color: $black-color-main;
+        .name, .path {
+          color: $text-main;
+        }
+        &:hover {
+          background-color: $black-color-main;
+          border-bottom-color: $black-color-main;
+        }
+      }
+      &:hover {
+        background-color: $black-bg-highlight;
+      }
+    }
+  }
+
+  /*BUTTONS*/
+  input[type=radio] + label.radio {
+    background-color: $black-bg-highlight;
+    border-color: $black-color-border-highlight;
+  }
+  input[type=radio]:checked + label.radio {
+    border-color: $black-color-main;
+  }
+  label.radio:hover {
+    border-color: $black-color-main !important;
+  }
+  input[type=radio]:checked + label.radio {
+    &:after {
+      background-color: $black-color-main;
+    }
+  }
+  .audio-switch {
+    input {
+      display: none;
+    }
+    input + label {
+      box-sizing: content-box;
+      border: 2px solid $text-subtitle;
+      background-color: $text-subtitle;
+      &:before {
+        border-color: transparent;
+        background-color: $black-bg;
+      }
+    }
+    input:checked + label {
+      border-color: $green;
+      background-color: $green;
+    }
+  }
+  input, select {
+    &::-webkit-input-placeholder{
+      color: rgba(255,255,255,0.3);
+    }
+    color: $black-color-text;
+    &:focus {
+      border-color: $black-color-main;
+      @include box-shadow(0 0 0 2px transparentize($black-color-main, 0.5))
+    }
+  }
+  input[type=checkbox] + label.checkbox {
+    background-color: $black-body-bg;
+    border-color: $black-color-border;
+  }
+  input[type=checkbox]:checked + label.checkbox {
+    border-color: $black-color-main;
+  }
+  label.checkbox:hover {
+    border-color: $black-color-main !important;
+  }
+  input[type=checkbox]:checked + label.checkbox {
+    &:after {
+      background-color: $black-color-main;
+    }
+  }
+  input {
+    background-color: $black-body-bg;
+    border-color: $black-color-border-highlight;
+  }
+
+  @each $name, $color in $btns {
+    // BTN
+    .btn-#{$name} {
+      @if $name == primary {
+        color: $black-color-text;
+        text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+        background: linear-gradient(to bottom, $black-btn-bg, darken($black-btn-bg, 5%));
+        border: 1px solid $black-btn-bg;
+      } @else {
+        text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+        color: white;
+        background: linear-gradient(to bottom, darken($color, 5%), darken($color, 10%));
+        border: 1px solid $color;
+      }
+      &:hover {
+        @if $name == primary {
+          color: $black-color-text;
+          background-color: $black-btn-bg-hover;
+          border: 1px solid $black-btn-bg-hover;
+        } @else {
+          background: linear-gradient(to bottom, $color, $color);
+          border-color: $color;
+        }
+      }
+      &:active {
+        @if $name == primary {
+        } @else {
+          background-color: darken($color, 10%);
+        }
+      }
+    }
+
+    // BTN-ALT
+    .btn-alt-#{$name} {
+      border-color: transparent;
+      background-color: transparent;
+      color: $color;
+      &:hover {
+        border-color: $color;
+        color: $color;
+      }
+      &:active {
+        color: $color;
+      }
+    }
+  }
+
+
+
+
+  /*TOOL*/
+  .tool{
+    .tool-panel{
+      border-right-color: $black-color-border;
+      background-color: $black-bg;
+      .title{
+        color: $black-color-text;
+      }
+      .content{
+        background-color: $black-body-bg;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border: none;
+        background-color: $black-color-border-highlight;
+      }
+    }
+    hr{
+      border-color: $black-color-border;
+    }
+
+
+    .readme{
+      .readme-item{
+        h3{
+          color: $black-color-text;
+        }
+        p{
+          color: $black-color-text-subtitle;
+          i{
+            color: $black-color-main;
+          }
+        }
+      }
+    }
+
+  }
+}
+
+.theme-dark {
+  @include dark-mode();
+}
+
+.theme-auto{
+  @media (prefers-color-scheme: dark) {
+    @include dark-mode();
+  }
+}
+
+.theme-white{
+
+}

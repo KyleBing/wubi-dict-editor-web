@@ -1,0 +1,299 @@
+<template>
+    <div v-cloak id="app" class="tool">
+        <!--词条编辑窗口-->
+        <div class="edit-modal modal" v-if="wordEditing">
+            <div class="modal-panel">
+                <div class="modal-close" @click="wordEditing = null"><img :src="$icons.delete_white" alt="close"></div>
+                <div class="modal-header">
+                    <div class="id">{{wordEditing.id}}</div>
+                </div>
+                <div class="modal-body">
+                    <div class="input-item">
+                        <label for="word">词条</label>
+                        <input ref="editInputWord" id="word" type="text" v-model="wordEditing.word" >
+                    </div>
+                    <div class="input-item mt-1">
+                        <label for="code">编码</label>
+                        <input ref="editInputCode" id="code" type="text" v-model="wordEditing.code" >
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn btn-cyan mr-2" @click="generateCodeForWordEdit">生成编码</div>
+                    <div class="btn btn-roseo" @click="confirmEditWord">确定</div>
+                </div>
+            </div>
+        </div>
+        <!--搜索框-->
+        <div class="search-bar" v-if="dict">
+            <div class="input-item">
+                <input class="word" ref="domInputWord" @keyup.enter="enterKeyPressed" v-model="word" type="text" placeholder="词条">
+                <div @click="word = ''" v-show="word" class="btn-clear">
+                    <img :src="$icons.delete_white" alt="clear">
+                </div>
+            </div>
+            <div class="input-item">
+                <input class="code" ref="domInputCode" @keyup.enter="enterKeyPressed" v-model="code" type="text" placeholder="编码">
+                <div @click="code = ''" v-show="code" class="btn-clear">
+                    <img :src="$icons.delete_white" alt="clear">
+                </div>
+            </div>
+            <div class="btn btn-primary" @click="addNewWord">添加</div>
+            <div class="btn btn-primary" @click="search">搜索</div>
+            <div class="btn btn-roseo" v-show="chosenWordIdArray.length > 0" @click="deleteWords">删除</div>
+            <p class="notice">显示格式：<b>编码</b> - 词条 - 序号 - id</p>
+
+            <template v-if="IS_IN_DEVELOP">
+
+            </template>
+        </div>
+
+        <!--  normal-mode-->
+        <div ref="container"
+             v-if="!dict.isGroupMode"
+             :style="`height: ${heightContent}px`"
+             class="container tool-container">
+            <div class="tool-panel"
+                 :style="`height: ${heightContent}px`"
+            >
+
+                <section>
+                    <div class="title">码表读取</div>
+                    <div class="content">
+                        <div class="load-list">
+                            <input @change="loadFileContent" type="file" id="fileSelector" class="hidden">
+                            <label class="btn btn-ellipsis btn-orange btn-load" for="fileSelector" >
+                                {{ dict.fileName || '选择码表文件' }}
+                            </label>
+
+                            <div class="btn-item ml-2">
+                                <div class="btn btn-primary" @click="checkRepetition(true)">重新载入</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="title">码表格式</div>
+                    <div class="content">
+                        <div class="btn-list">
+                            <div class="btn-item" v-for="item in dictFormatArray" :key="item.name">
+                                <div :class="['btn btn-primary', {'btn-blue': dictFormatRead === item.value}]" @click="dictFormatRead = item.value">{{item.name}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="title">码表分隔符</div>
+                    <div class="content">
+                        <div class="btn-list">
+                            <div class="btn-item" v-for="item in seperatorArray" :key="item.name">
+                                <div :class="['btn btn-primary', {'btn-blue': seperatorRead === item.value}]" @click="seperatorRead = item.value">{{item.name}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="title">字数筛选</div>
+                    <div class="content btn-list">
+                        <div class="btn-item" v-for="item in filterCharacterLengthArray" :key="item.name">
+                            <div @click="changeFilterWordLength(item.value)" :class="['btn btn-primary', {'btn-blue': filterCharacterLength === item.value}]">{{ item.name }}</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="title">查重</div>
+                    <div class="content">
+                        <div class="btn-list">
+                            <div class="btn-item">
+                                <div class="btn btn-primary" @click="checkRepetition(true)">单字</div>
+                            </div>
+                            <div class="btn-item">
+                                <div class="btn btn-primary" @click="checkRepetition(false)">词组</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <hr>
+
+                <!--保存-->
+                <section>
+                    <div class="title">码表保存</div>
+                    <!-- 分隔符 -->
+                    <div class="content">
+                        <div class="btn-list">
+                            <div class="btn-item" v-for="item in seperatorArray" :key="item.name">
+                                <div :class="['btn btn-primary', {'btn-green': seperatorSave === item.value}]" @click="seperatorSave = item.value">{{item.name}}</div>
+                            </div>
+                        </div>
+                        <!-- 码表格式 -->
+                        <div class="btn-list">
+                            <div class="btn-item" v-for="item in dictFormatArray" :key="item.name">
+                                <div :class="['btn btn-primary', {'btn-green': dictFormatSave === item.value}]" @click="dictFormatSave = item.value">{{item.name}}</div>
+                            </div>
+                        </div>
+                        <!--  保存-->
+                        <div class="load-list mb-2">
+                            <div v-if="fileNameSave" class="btn btn-orange btn-load btn-ellipsis center">{{ fileNameSave }}</div>
+                            <div
+                                :class="[
+                                    'btn', 'center', 'btn-reload',
+                                    {'btn-green': labelOfSaveBtn === '保存成功'},
+                                    {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
+                                ref="domBtnSave"
+                                @click="saveToFile(dict)"> {{ labelOfSaveBtn }}
+                            </div>
+                        </div>
+                        <div>
+                            <div
+                                :class="[
+                            'btn', 'center',
+                            {'btn-green': labelOfSaveBtn === '保存成功'},
+                            {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
+                                ref="domBtnSave"
+                                @click="saveToFile(dict, true)"> 保存到源文件
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="title">Apple plist</div>
+                    <div class="content">
+                        <div class="btn-list">
+                            <div class="btn-item">
+                                <div class="btn btn-cyan" @click="exportSelectionToPlist">导出选中词条到 plist 文件</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <hr>
+
+                <!-- 编码处理-->
+                <section>
+                    <div class="title">编码生成</div>
+                    <div class="content">
+                        <div class="btn-list">
+                            <div class="btn  btn-primary center" @click="generateCodeForAllWords">生成所有词条的编码</div>
+                        </div>
+                    </div>
+                </section>
+                <!--            <section>
+                                <div class="title">编码查错</div>
+                                <div class="content">
+                                    <div class="btn-list">
+                                        <div class="btn  btn-primary center" @click="">据此码表生成编码</div>
+                                    </div>
+                                </div>
+                            </section>-->
+
+                <hr>
+                <section>
+                    <div class="title">使用说明</div>
+                    <div class="content">
+                        <div class="readme">
+                            <div class="readme-item">
+                                <h3>载入码表</h3>
+                                <p>载入码表的时候，需要保证码表文件是 <i>UTF8</i> 编码的，如果不是，可以使用 <i>VSCode</i>（支持所有平台） 进行编码转换，具体百度即可。</p>
+                                <p>然后选择码表文件中词条与编码的排列方式，以什么分隔符分隔的。</p>
+                                <p>点击 <i>重新载入</i>重新识别码表内容即可，注意列表中呈现的内容顺序是 <i>编码</i> - <i>词条</i> - <i>序号</i> - <i>id</i> 注意编码与词条位置调换的情况。</p>
+                            </div>
+                            <div class="readme-item">
+                                <h3>保存码表</h3>
+                                <p>保存码表时，可以选择保存词条的编码和内容的顺序： <i>前词后码</i>、<i>前码后词</i>、<i>一码多词</i>。</p>
+                                <p>还可以选择编码与词条的分隔符： <i>空格</i> 或 <i>tab</i>。</p>
+                                <p>保存文件时，可以选择保存到源文件，或者保存成下方显示的文件名中。</p>
+                            </div>
+                            <div class="readme-item">
+                                <h3>移动词条到现有词库</h3>
+                                <p>选择当前窗口中的词条，移动到 Rime 码表中的时候，会删除该码表文件中的对应词条，并实时保存到原码表文件。</p>
+                                <p>保险起见，最好在使用工具前备份一下你要操作的码表文件。</p>
+                            </div>
+                            <div class="readme-item">
+                                <h3>关于批量选择</h3>
+                                <p>选择词条时，不再需要点击前方的小方块，点击整条也是同样的效果。</p>
+                                <p>按 <i>shift键</i> 即可批量选择</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+
+            <!-- 主词条列表  -->
+
+            <div class="list-container">
+                <div class="group">
+                    <recycle-scroller
+                        :buffer="1000"
+                        :prerender="200"
+                        :style="`height: ${heightContent}px`"
+                        v-if="words"
+                        :min-item-size="24"
+                        class="virtual-list"
+                        :items="words">
+                        <template v-slot="{ item, index }">
+                            <div class="word-item" @click="select(index, item.id, $event)">
+                                <div class="checkbox-cell">
+                                    <!--                                <div :class="['checkbox-item', {active: chosenWordIdArray.some(i => i === item.id)}]"></div>-->
+                                    <div :class="['checkbox-item', {active: chosenWordIds.has(item.id)}]"></div>
+                                </div>
+                                <div class="code">{{ item.code }}</div>
+                                <div class="word">{{ item.word }}</div>
+                                <div v-if="item.priority" title="权重" class="priority">{{ item.priority }}</div>
+                                <div class="id">{{ index + 1 }}</div>
+                                <div class="id">{{ item.id }}</div>
+                                <div class="operation">
+                                    <div class="up" @click.stop="moveUp(item.id)">
+                                        <img :src="$icons.up" alt="move up">
+                                    </div>
+                                    <div class="down" @click.stop="moveDown(item.id)">
+                                        <img :src="$icons.down" alt="move down">
+                                    </div>
+                                    <div class="down" @click.stop="editWord(item)">
+                                        <img :src="$icons.edit" alt="edit">
+                                    </div>
+                                    <div  class="down" @click.stop="deleteWord(item.id)">
+                                        <img :src="$icons.delete" alt="move down">
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </recycle-scroller>
+                </div>
+            </div>
+        </div>
+
+        <!--FOOTER-->
+        <div class="footer">
+            <div class="footer-toolbar">
+                <div class="link-list">
+                    <div class="link" ref="domBtnSelectAll" @click="selectAll">全选</div>
+                    <div class="link" @click="resetInputs">清选</div>
+                    <div class="link" @click="sort">排序</div>
+                    <div class="link origin" @click="openCurrentYaml">{{ dict.fileName }}</div>
+                </div>
+                <div class="info-list">
+                    <div class="count">总<span class="number">{{dict.countDictOrigin}}</span></div>
+                    <div class="count"
+                         v-if="dict.countDictOrigin !== dict.countDict">显<span class="number">{{wordsCount}}</span></div>
+                    <div class="count">选<span class="number">{{chosenWordIds.size}}</span></div>
+                </div>
+            </div>
+
+            <div class="tip">{{tip}}</div>
+        </div>
+    </div>
+</template>
+
+
+
+
+<script>
+import tool from './Tool'
+export default tool
+</script>

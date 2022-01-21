@@ -1,0 +1,143 @@
+
+.config-file-list{
+  .config-file-list-item{
+    @extend .unselectable;
+    padding: 3px 8px;
+    border-bottom: 1px solid $border-color;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    .name{
+      color: $text-title;
+    }
+    .path{
+      margin-left: 30px;
+      color: $text-subtitle;
+    }
+    &:last-child{
+      border-bottom: none;
+    }
+    &:hover{
+      @include border-radius(3px);
+      overflow: hidden;
+      border-bottom-color: transparent;
+      background-color: $bg-dropdown-highlight;
+    }
+    &.active{
+      @include border-radius(3px);
+      overflow: hidden;
+      background-color: $color-main;
+      border-bottom-color: $color-main;
+      .name, .path{
+        color: white;
+      }
+    }
+  }
+}
+
+
+.config{
+  .container {
+    padding: 10px 25px;
+  }
+
+  section{
+    margin-bottom: 30px;
+    .section-title{
+      padding: 10px 0;
+      h3{
+        font-weight: bold;
+        font-size: $fz-title;
+        margin-bottom: 3px;
+      }
+      .desc{
+        font-size: $fz-button;
+        color: $text-subtitle;
+      }
+    }
+    .section-content{
+      @include border-radius(5px);
+      background-color: $bg-panel;
+      padding: 10px 10px 10px 50px;
+      .check-item{
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        & > *:first-child{
+          margin-right: 5px;
+        }
+        .label{
+          width: 80px;
+          white-space: nowrap;
+        }
+        &:last-child{
+          margin-bottom: 0;
+        }
+      }
+      .check-list{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        .check-item{
+          margin-right: 20px;
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+
+$height-switch: 14px;
+
+.audio-switch{
+  input{
+    display: none;
+  }
+  input+label{
+    cursor: pointer;
+    box-sizing: content-box;
+    border: 2px solid $text-subtitle;
+    background-color: $text-subtitle;
+    position: relative;
+    display: block;
+    width: $height-switch * 1.8;
+    @include border-radius(30px);
+    height: $height-switch;
+    @include transition(all .3s);
+    &:before{
+      z-index: 10;
+      box-sizing: border-box;
+      border: 1px solid #eeeeee;
+      content: '';
+      display: block;
+      @include box-shadow(1px 3px 6px rgba(0,0,0,0.5));
+      top: 0;
+      left: 0;
+      position: absolute;
+      width: $height-switch;
+      height: $height-switch;
+      @include border-radius(30px);
+      background-color: white;
+      @include transition(all .3s);
+
+    }
+  }
+  input:checked+label{
+    @include transition(all .3s);
+    border-color: $green;
+    background-color: $green;
+    &:before{
+      top: 0;
+      left: $height-switch * .8;
+      background-color: #fff;
+      @include transition(all .3s);
+    }
+  }
+}
+
+.dict-map-content{
+  height: 100px;
+  overflow-y: auto;
+}

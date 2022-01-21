@@ -1,0 +1,92 @@
+@use "sass:math";
+
+.search-bar{
+  width: 100%;
+  z-index: 10;
+  border-bottom: 1px solid $border-color;
+  background-color: $bg-panel;
+  padding: 10px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  > *{
+    margin-right: 5px;
+  }
+}
+$fz-notice: 11px;
+.notice{
+  margin-left: 20px;
+  font-size: $fz-notice;
+  color: $text-subtitle;
+}
+
+$height-clear: 16px;
+
+.input-item{
+  position: relative;
+  .btn-clear{
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+    top: ($height-input + $padding-input-tb - $height-clear)/2;
+    z-index: 10;
+    height: 15px;
+    width: 15px;
+    padding: 4px;
+    background-color: $bg-td;
+    @include border-radius(10px);
+    img{
+      display: block;
+      width: 100%;
+    }
+    &:hover{
+      background-color: $color-main;
+    }
+    &:active{
+      transform: translateY(1px);
+    }
+  }
+}
+
+input, select{
+  &::-webkit-input-placeholder{
+    color: $text-comment;
+  }
+  font-size: inherit;
+  line-height: $height-input - $padding-input-tb * 2;
+  border: 1px solid $border-color-input;
+  @include border-radius($radius);
+  padding: $padding-input-tb 8px;
+  &.code{
+    //font-family: monospace;
+    flex-shrink: 0;
+    width: 5rem;
+  }
+  &.word{
+    flex-shrink: 0;
+    width: 12rem;
+  }
+  &.note{
+    flex-shrink: 0;
+    width: 10rem;
+  }
+  &.priority{
+    flex-shrink: 0;
+    width: 6rem;
+  }
+  &:focus{
+    border-color: transparentize($color-main, 0.4);
+    @include box-shadow(0 0 0 2px transparentize($color-main, 0.7))
+  }
+  @include transition(all, 0.5s)
+}
+select{
+  min-width: 80px;
+  option{
+    padding: 10px;
+
+  }
+}

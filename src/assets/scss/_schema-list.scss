@@ -1,0 +1,37 @@
+.schema-list{
+  border-right: 1px solid $border-color-panel;
+  flex-shrink: 0;
+  overflow-y: auto;
+  .schema-list-item{
+    @extend .unselectable;
+    text-align: center;
+    line-height: $catalog-height - $catalog-pd-tb * 2;
+    padding: $catalog-pd-tb 30px;
+    cursor: pointer;
+    > div{
+      height: $catalog-height - $catalog-pd-tb * 2;
+    }
+    &:hover{
+      background-color: $bg-td-highlighted;
+    }
+    &.active{
+      background-color: $color-main;
+      color: white;
+    }
+  }
+  &::-webkit-scrollbar {
+    z-index: 50;
+    width: 1px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: $bg-scroll-thumb;
+  }
+}
+
+.file-list{
+  flex-grow: 1;
+  overflow-y: auto;
+}

@@ -1,0 +1,74 @@
+* {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    font-size: inherit;
+    font-family: inherit;
+    color: inherit;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+body {
+    width: 100%;
+    margin: 0 auto;
+    font-family: "PingFang SC", "Microsoft Yahei UI", "Microsoft Yahei", "Helvetica", sans-serif;;
+}
+a {
+    text-decoration: none;
+}
+table {
+    border-collapse: collapse;
+}
+select {
+    -webkit-appearance: none;
+}
+code,
+kbd,
+pre,
+samp,
+tt {
+    font-family: "Courier New", Courier, monospace;
+}
+:focus,
+:active {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    outline: none;
+}
+::-webkit-scrollbar {
+    z-index: 50;
+    width: 10px;
+    height: 3px;
+}
+::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+}
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.15);
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.05);
+    transition: all .2s;
+    height: 20px;
+}
+:hover::-webkit-scrollbar-thumb {
+    transition: all .2s;
+}
+::-webkit-scrollbar-button {
+    display: none;
+}
+::-webkit-scrollbar-corner {
+    display: none;
+}
+@media (prefers-color-scheme: dark) {
+    ::-webkit-scrollbar-track {
+        background-color: rgba(0, 0, 0, 0);
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: #ddd;
+    }
+    :hover::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+    }
+}

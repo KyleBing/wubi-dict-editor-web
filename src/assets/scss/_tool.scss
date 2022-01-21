@@ -1,0 +1,107 @@
+.tool-container{
+  display: flex;
+  flex-flow: row nowrap;
+
+  .tool-panel{
+    border-right: 1px solid $border-color;
+    width: 400px;
+    flex-shrink: 0;
+  }
+  .list-container{
+    flex-grow: 1;
+    .word-item{
+      padding: 0 5px 0 10px;
+    }
+  }
+}
+
+hr{
+  margin: 20px 0;
+  border-bottom: 1px solid $border-color-checkbox;
+}
+
+.tool-panel{
+  overflow-y: auto;
+  margin-top: 1px;
+  background-color: $bg-panel-tool;
+  padding: 10px 15px 15px;
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border: none;
+    background-color: $border-color-checkbox;
+  }
+  &:hover::-webkit-scrollbar-thumb{
+    background-color: inherit;
+  }
+
+  section{
+    margin-bottom: 15px;
+    .title{
+      font-size: $fz-button;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: $text-title;
+    }
+    .content {
+      @include border-radius(5px);
+      padding: 8px;
+      background-color: $bg-panel;
+    }
+    &:last-child{
+      margin-bottom: 0;
+    }
+  }
+}
+
+
+.load-list{
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  flex-flow: row nowrap;
+  .btn-load{
+    flex-grow: 1;
+  }
+  .btn-reload{
+    margin-left: 10px;
+    flex-shrink: 0;
+    width: 80px;
+  }
+}
+
+.btn-list {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+  .btn-item {
+    margin-right: 10px;
+  }
+  &:last-child{
+    margin-bottom: 0;
+  }
+}
+
+.readme{
+  .readme-item{
+    margin-bottom: 20px;
+    h3{
+      color: $text-tool-title;
+      margin-bottom: 5px;
+    }
+    p{
+      font-size: $fz-notice;
+      color: $text-subtitle;
+      line-height: 1.5;
+      i{
+        white-space: nowrap;
+        font-weight: bold;
+        font-style: normal;
+        color: $color-main;
+      }
+    }
+  }
+}

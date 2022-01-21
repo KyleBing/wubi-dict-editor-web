@@ -1,0 +1,204 @@
+$bg-td-highlighted: transparentize($color-main, 0.95);
+$height-word-item: 24px;
+
+.virtual-list{
+  height: 100%;
+  padding-bottom: 10px; // virtual-scroller 时的末尾 padding
+}
+
+.list-container{
+  overflow-y: auto;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.group{
+  font-size: $fz-list;
+  color: $text-main;
+  .group-header{
+    padding: 5px 10px 5px 35px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: $color-main;
+    &.active{
+      background-color: transparentize($color-main, 0.95);
+      h3{
+      }
+    }
+    &:hover{
+      @include transition(all 0.3s);
+      background-color: transparentize($color-main, 0.95);
+      .operation{
+        opacity: 1;
+      }
+    }
+    input{
+      margin-right: 10px;
+    }
+    h3{
+      //flex-grow: 1;
+      font-size: $fz-list + 1;
+      line-height: $height-input + 2;
+      margin-right: 10px;
+    }
+    .operation{
+      margin-right: 10px;
+      opacity: 0;
+      flex-shrink: 0;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      > * {
+        margin-left:5px;
+      }
+      @include transition(all 0.3s);
+    }
+    .tip{
+      flex-grow: 1;
+      text-align: right;
+      font-size: $fz-list - 2;
+    }
+  }
+}
+.word-list{
+  padding-bottom: 20px;
+}
+
+$checkbox-shadow: false;
+$height-checkbox: 14px;
+$border-color-checkbox: #d6d6d6;
+
+.word-item{
+  @extend .unselectable;
+  height: $height-word-item;
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  position: relative;
+  padding: 0 20px;
+  &.active{
+    background-color: $color-main;
+  }
+  &:after{
+    content: '';
+    height: 1px;
+    position: absolute;
+    bottom: -1px;
+    width: calc(100% - 45px);
+    right: 0;
+    background-color: $border-color;
+  }
+  .checkbox-cell{
+    padding-right: 20px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    .checkbox-item{
+      cursor: pointer;
+      display: block;
+      width: $height-checkbox;
+      background-color: white;
+      height: $height-checkbox;
+      @include border-radius(3px);
+      border: 1px solid $border-color-checkbox;
+      position: relative;
+      @if $checkbox-shadow{
+        @include box-shadow(inset 1px 1px 2px rgb(0 0 0 / 12%))
+      }
+
+      &.active{
+        border-color: $color-main;
+        &:after{
+          content: '';
+          display: block;
+          position: absolute;
+          height: $height-checkbox - 6;
+          width: $height-checkbox - 6;
+          top: 2px;
+          left: 2px;
+          @include border-radius(3px);
+          background-color: $color-main;
+        }
+      }
+    }
+  }
+  .code{
+    //@extend .font-roboto;
+    line-height: $height-word-item;
+    min-width: 15%;
+    padding-right: 20px;
+    color: $text-title;
+  }
+  .word{
+    padding-right: 10px;
+    line-height: $height-word-item;
+    flex-shrink: 0;
+    flex-grow: 1;
+    max-width: 60%;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .priority{
+    white-space: nowrap;
+    @extend .font-roboto;
+    padding-right: 10px;
+    text-align: right;
+    color: $text-subtitle;
+    font-size: $fz-list - 2;
+  }
+  .note{
+    color: $text-subtitle;
+    padding-right: 10px;
+    white-space: nowrap;
+    font-size: $fz-list - 2;
+  }
+  .id{
+    @extend .font-roboto;
+    text-align: right;
+    padding-right: 10px;
+    width: $fz-list * 4 + 20;
+    color: $text-subtitle;
+    font-size: $fz-list - 2;
+  }
+  .operation{
+    width: 100px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    opacity: 0.2;
+    @extend .unselectable;
+    display: flex;
+    justify-content: flex-end;
+    .up, .down{
+      cursor: pointer;
+      padding: 5px 6px;
+      @include border-radius(2px);
+      img{
+        display: block;
+        width: 8px;
+      }
+      &:hover{
+        background-color: white;
+      }
+      &:active{
+        transform: translateY(1px);
+      }
+    }
+  }
+
+  &:hover{
+    background-color: $bg-td-highlighted;
+    .checkbox-cell{
+      .checkbox-item{
+        border-color: $color-main !important;
+        @if $checkbox-shadow {
+          @include box-shadow(inset 1px 1px 2px transparentize($color-main, 0.8) !important) ;
+        }
+      }
+
+    }
+    .operation{
+      opacity: 1;
+    }
+  }
+}
