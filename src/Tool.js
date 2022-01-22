@@ -1,11 +1,9 @@
 import {shakeDom, shakeDomFocus, log} from './lib/Utility'
 import {IS_IN_DEVELOP} from './lib/Global'
-import Dict from './lib/Dict'
 
 import DictOther from './lib/DictOther'
 import DictMap from './lib/DictMap'
 import Word from './lib/Word'
-import path from 'path'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import plist from "plist";
 
@@ -86,17 +84,6 @@ export default {
                 this.labelOfSaveBtn = '保存'
             }, 2000)
         })
-
-        // 载入目标码表
-        ipcRenderer.on('ToolWindow:SetTargetDict', (event, filename, filePath, res) => {
-            this.targetDict = new Dict(res, filename, filePath)
-        })
-
-        // 载入主码表
-        ipcRenderer.on('setMainDict', (event, filename, res) => {
-            this.dictMain = new Dict(res, filename)
-        })
-
 
         // 获取并设置字典文件
         ipcRenderer.on('setDictMap', (event, fileContent, fileName, filePath) => {
