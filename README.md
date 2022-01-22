@@ -1,4 +1,4 @@
-<img src="https://user-images.githubusercontent.com/12215982/139462759-e6d8ebc6-180d-4d18-8c3c-68234f0ff1c0.png" width="150" />
+<img src="public/appicon-apple.png" width="150" />
 
 # 码表助手 web 版 
 
