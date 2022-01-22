@@ -11,9 +11,8 @@
 
 
 ## 用到的技术
-- `nodejs`
 - `javascript` `scss` `html`
-- `vue 2` [`electron`](https://github.com/electron/electron)
+- `vue 2`
 
 
 ## 解决的难题
