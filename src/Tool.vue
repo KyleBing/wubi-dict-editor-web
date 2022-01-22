@@ -150,6 +150,8 @@
                     </div>
                 </section>
 
+                <hr>
+
                 <section>
                     <div class="title">Apple plist</div>
                     <div class="content">
@@ -161,27 +163,27 @@
                     </div>
                 </section>
 
-<!--                <hr>-->
+                <hr>
 
                 <!-- 编码处理-->
-<!--                <section>
+                <section>
                     <div class="title">编码生成</div>
                     <div class="content">
                         <div class="btn-list">
-                            <div class="btn  btn-primary center" @click="generateCodeForAllWords">生成所有词条的编码</div>
+                            <div class="btn btn-primary center" @click="generateCodeForAllWords">载入码表字典</div>
+                            <input @change="loadDictMapFile" type="file" id="dictSelector" class="hidden">
+                            <label class="btn btn-ellipsis btn-orange btn-load ml-2" for="dictSelector" >
+                                {{ dictMap && dictMap.fileName || '选择码表字典文件' }}
+                            </label>
+                        </div>
+                        <div class="btn-list">
+                            <div class="btn btn-primary center" @click="generateCodeForAllWords">生成所有词条的编码</div>
                         </div>
                     </div>
-                </section>-->
-                <!--            <section>
-                                <div class="title">编码查错</div>
-                                <div class="content">
-                                    <div class="btn-list">
-                                        <div class="btn  btn-primary center" @click="">据此码表生成编码</div>
-                                    </div>
-                                </div>
-                            </section>-->
+                </section>
 
                 <hr>
+
                 <section>
                     <div class="title">使用说明</div>
                     <div class="content">

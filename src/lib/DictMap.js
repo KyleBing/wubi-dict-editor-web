@@ -5,10 +5,10 @@ const os = require('os')
 
 // 只接受 一词一码 的码表文件
 class DictMap {
-    constructor(fileContent, filename, filePath) {
+    constructor(fileContent, fileName, filePath) {
         this.dictTypeName = 'DictMap'
         this.filePath = filePath // 文件路径
-        this.filename = filename // 文件路径
+        this.fileName = fileName // 文件路径
         this.lastIndex = 0 // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入
         this.seperator = '\t' // 间隔符为 tab
         this.characterMap = new Map() // 单字码表，用于根据此生成词语码表

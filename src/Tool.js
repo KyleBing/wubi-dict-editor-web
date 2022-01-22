@@ -75,21 +75,8 @@ export default {
         if(IS_IN_DEVELOP) this.filePath = 'C:\\Users\\Administrator\\AppData\\Roaming\\Rime\\origin.txt'
 
         this.heightContent = innerHeight - 47 - 20 - 10 + 3
-        ipcRenderer.on('saveFileSuccess', () => {
-            this.labelOfSaveBtn = '保存成功'
-            this.tipNotice('保存成功')
-            this.$refs.domBtnSave.classList.add('btn-green')
-            setTimeout(()=>{
-                this.$refs.domBtnSave.classList.remove('btn-green')
-                this.labelOfSaveBtn = '保存'
-            }, 2000)
-        })
 
-        // 获取并设置字典文件
-        ipcRenderer.on('setDictMap', (event, fileContent, fileName, filePath) => {
-            this.dictMap = new DictMap(fileContent, fileName, filePath)
-        })
-        ipcRenderer.send('getDictMap')
+        // load dict map
 
         this.addKeyboardListener()
         onresize = ()=>{
@@ -99,15 +86,7 @@ export default {
     computed: {
         // 当前显示的 words 数量
         wordsCount(){
-            if (this.dict.isGroupMode){
-                let countCurrent = 0
-                this.words.forEach(group => {
-                    countCurrent = countCurrent + group.dict.length
-                })
-                return countCurrent
-            } else {
-                return this.words.length
-            }
+            return this.words.length
         },
         // 当前载入的是否为 主 码表
         isInMainDict(){
@@ -116,7 +95,22 @@ export default {
     },
 
     methods: {
-        // load file content
+        // 载入码表字典文件
+        loadDictMapFile(event){
+            let file = event.target.files[0]
+            let reader = new FileReader()
+            reader.onload = (res) => {
+                let fileContent = res.target.result
+                let filePath = file.name
+                let fileName = file.name
+                this.dictMap = new DictMap(fileContent, fileName, filePath)
+                // save dict file content to localstorage
+                this.tipNotice('载入完成')
+            }
+            reader.readAsText(file)
+        },
+
+        // 载入码表文件
         loadFileContent(event){
             let file = event.target.files[0]
             console.log(file)
@@ -308,17 +302,7 @@ export default {
         // 选中全部展示的词条
         selectAll(){
             if(this.wordsCount < 100000){ // 最多同时选择 10w 条数据
-                if (this.dict.isGroupMode){
-                    this.chosenWordIds.clear()
-                    this.chosenWordIdArray = []
-                    this.words.forEach(group => {
-                        group.forEach( item => {
-                            this.chosenWordIds.add(item.id)
-                        })
-                    })
-                } else {
-                    this.words.forEach(item => {this.chosenWordIds.add(item.id)})
-                }
+                this.words.forEach(item => {this.chosenWordIds.add(item.id)})
                 this.chosenWordIdArray = [...this.chosenWordIds.values()]
             } else {
                 // 提示不能同时选择太多内容
@@ -352,62 +336,30 @@ export default {
 
         // 词条位置移动
         move(wordId, direction){
-            if (this.dict.isGroupMode){
-                // group 时，移动 调换 word 位置，是直接调动的 wordsOrigin 中的word
-                // 因为 group 时数据为： [{word, word},{word,word}]，是 wordGroup 的索引
-                for(let i=0; i<this.words.length; i++){
-                    let group = this.words[i]
-                    for(let j=0; j<group.dict.length; j++){
-                        if (wordId === group.dict[j].id){
-                            let tempItem = group.dict[j]
-                            if (direction === 'up'){
-                                if (j !==0){
-                                    group.dict[j] = group.dict[j - 1]
-                                    group.dict[j - 1] = tempItem
-                                    return ''
-                                } else {
-                                    log('已到顶')
-                                    return '已到顶'
-                                }
-                            } else if (direction === 'down'){
-                                if (j+1 !== group.dict.length){
-                                    group.dict[j] = group.dict[j + 1]
-                                    group.dict[j + 1] = tempItem
-                                    return ''
-                                } else {
-                                    log('已到底')
-                                    return '已到底'
-                                }
-                            }
+            // 非分组模式时，调换位置并不能直接改变 wordsOrigin 因为 与 words 已经断开连接
+            // [word, word]
+            for(let i=0; i<this.words.length; i++){
+                if (wordId === this.words[i].id){
+                    let tempItem = this.words[i]
+                    if (direction === 'up'){
+                        if (i !==0) {
+                            this.dict.exchangePositionInOrigin(tempItem, this.words[i-1]) // 调换 wordsOrigin 中的词条位置
+                            this.words[i] = this.words[i - 1]
+                            this.words[i - 1] = tempItem
+                            return ''
+                        } else {
+                            log('已到顶')
+                            return '已到顶'
                         }
-                    }
-                }
-            } else {
-                // 非分组模式时，调换位置并不能直接改变 wordsOrigin 因为 与 words 已经断开连接
-                // [word, word]
-                for(let i=0; i<this.words.length; i++){
-                    if (wordId === this.words[i].id){
-                        let tempItem = this.words[i]
-                        if (direction === 'up'){
-                            if (i !==0) {
-                                this.dict.exchangePositionInOrigin(tempItem, this.words[i-1]) // 调换 wordsOrigin 中的词条位置
-                                this.words[i] = this.words[i - 1]
-                                this.words[i - 1] = tempItem
-                                return ''
-                            } else {
-                                log('已到顶')
-                                return '已到顶'
-                            }
-                        } else if (direction === 'down'){
-                            if (i+1 !== this.words.length) {
-                                this.dict.exchangePositionInOrigin(tempItem, this.words[i+1]) // 调换 wordsOrigin 中的词条位置
-                                this.words[i] = this.words[i + 1]
-                                this.words[i + 1] = tempItem
-                                return ''
-                            } else {
-                                log('已到底')
-                                return '已到底'
-                            }
+                    } else if (direction === 'down'){
+                        if (i+1 !== this.words.length) {
+                            this.dict.exchangePositionInOrigin(tempItem, this.words[i+1]) // 调换 wordsOrigin 中的词条位置
+                            this.words[i] = this.words[i + 1]
+                            this.words[i + 1] = tempItem
+                            return ''
+                        } else {
+                            log('已到底')
+                            return '已到底'
                         }
                     }
                 }
@@ -428,43 +380,21 @@ export default {
         },
         // 判断是否为第一个元素
         isFirstItem(id){
-            if (this.dict.isGroupMode){ // 分组时的第一个元素
-                for (let i=0; i<this.words.length; i++) {
-                    for (let j = 0; j < this.words[i].dict.length; j++) {
-                        if (this.words[i].dict[j].id === id){
-                            return j === 0 // 使用 array.forEach() 无法跳出循环
-                        }
-                    }
+            for (let i = 0; i < this.words.length; i++) {
+                if (this.words[i].id === id){
+                    return i === 0 // 使用 array.forEach() 无法跳出循环
                 }
-                return false
-            } else {
-                for (let i = 0; i < this.words.length; i++) {
-                    if (this.words[i].id === id){
-                        return i === 0 // 使用 array.forEach() 无法跳出循环
-                    }
-                }
-                return false
             }
+            return false
         },
         // 判断是否为最后一个元素
         isLastItem(id){
-            if (this.dict.isGroupMode){ // 分组时的最后一个元素
-                for (let i=0; i<this.words.length; i++) {
-                    for (let j = 0; j < this.words[i].dict.length; j++) {
-                        if (this.words[i].id === id){
-                            return j + 1 === this.words.length
-                        }
-                    }
+            for (let i = 0; i < this.words.length; i++) {
+                if (this.words[i].id === id){
+                    return i + 1 === this.words.length
                 }
-                return false
-            } else {
-                for (let i = 0; i < this.words.length; i++) {
-                    if (this.words[i].id === id){
-                        return i + 1 === this.words.length
-                    }
-                }
-                return false
             }
+            return false
         },
         // 绑定键盘事件： 键盘上下控制词条上下移动
         addKeyboardListener(){
