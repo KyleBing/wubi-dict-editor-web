@@ -77,6 +77,10 @@ export default {
         this.heightContent = innerHeight - 47 - 20 - 10 + 3
 
         // load dict map
+        let dictMapFileContent = localStorage.getItem('DictMapFileContent')
+        if (dictMapFileContent){
+            this.dictMap = new DictMap(dictMapFileContent, 'DicMapFile.txt', 'DicMapFile.txt')
+        }
 
         this.addKeyboardListener()
         onresize = ()=>{
@@ -105,6 +109,7 @@ export default {
                 let fileName = file.name
                 this.dictMap = new DictMap(fileContent, fileName, filePath)
                 // save dict file content to localstorage
+                localStorage.setItem('DictMapFileContent', this.dictMap.toExportString())
                 this.tipNotice('载入完成')
             }
             reader.readAsText(file)
@@ -126,8 +131,6 @@ export default {
                 // 载入新码表时，清除 word 保存 code
                 this.word = ''
                 this.refreshShowingWords()
-
-                // ipcRenderer.send('loadMainDict') // 请求主码表文件 // TODO: 码表字典文件
             }
             reader.readAsText(file)
         },

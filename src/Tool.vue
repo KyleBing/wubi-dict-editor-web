@@ -94,6 +94,8 @@
                     </div>
                 </section>
 
+                <hr>
+
                 <section>
                     <div class="title">字数筛选</div>
                     <div class="content btn-list">
@@ -170,14 +172,13 @@
                     <div class="title">编码生成</div>
                     <div class="content">
                         <div class="btn-list">
-                            <div class="btn btn-primary center" @click="generateCodeForAllWords">载入码表字典</div>
                             <input @change="loadDictMapFile" type="file" id="dictSelector" class="hidden">
-                            <label class="btn btn-ellipsis btn-orange btn-load ml-2" for="dictSelector" >
-                                {{ dictMap && dictMap.fileName || '选择码表字典文件' }}
+                            <label class="btn btn-ellipsis btn-orange btn-load" for="dictSelector" >
+                                {{ dictMap && dictMap.fileName || '载入码表字典文件' }}
                             </label>
-                        </div>
-                        <div class="btn-list">
-                            <div class="btn btn-primary center" @click="generateCodeForAllWords">生成所有词条的编码</div>
+                            <div v-if="dictMap && dictMap.characterMap.size > 0"
+                                 class="btn btn-primary center ml-2"
+                                 @click="generateCodeForAllWords">生成所有词条的编码</div>
                         </div>
                     </div>
                 </section>
@@ -195,6 +196,11 @@
                                 <p>点击 <i>重新载入</i>重新识别码表内容即可，注意列表中呈现的内容顺序是 <i>编码</i> - <i>词条</i> - <i>序号</i> - <i>id</i> 注意编码与词条位置调换的情况。</p>
                             </div>
                             <div class="readme-item">
+                                <h3>码表字典（五笔适用）</h3>
+                                <p>选择 yaml 格式的码表文件，提取其中的单字部分作为之后词语编码自动生成的依据，并会自动保存留作日后使用。</p>
+                                <p>这样之后可以批量生成所有词条的编码，在添加新词的时候也会自动生成五笔编码</p>
+                            </div>
+                            <div class="readme-item">
                                 <h3>保存码表</h3>
                                 <p>保存码表时，可以选择保存词条的编码和内容的顺序： <i>前词后码</i>、<i>前码后词</i>、<i>一码多词</i>。</p>
                                 <p>还可以选择编码与词条的分隔符： <i>空格</i> 或 <i>tab</i>。</p>
@@ -204,6 +210,12 @@
                                 <h3>关于批量选择</h3>
                                 <p>选择词条时，不再需要点击前方的小方块，点击整条也是同样的效果。</p>
                                 <p>按 <i>shift键</i> 即可批量选择</p>
+                            </div>
+                            <div class="readme-item">
+                                <h3>关于</h3>
+                                <p>更新：<i>2022-01-22</i></p>
+                                <p>github: <i><a href="https://github.com/KyleBing/wubi-dict-editor-web">https://github.com/KyleBing/wubi-dict-editor-web</a></i></p>
+                                <p>home: <i><a href="https://kylebing.cn">https://kylebing.cn</a></i></p>
                             </div>
                         </div>
                     </div>
