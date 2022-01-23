@@ -213,7 +213,8 @@
                             </div>
                             <div class="readme-item">
                                 <h3>关于</h3>
-                                <p>更新：<i>2022-01-22</i></p>
+                                <p>更新：<i>2022.01.23</i></p>
+                                <p>客户端版: <i><a href="https://github.com/KyleBing/wubi-dict-editor">https://github.com/KyleBing/wubi-dict-editor</a></i></p>
                                 <p>github: <i><a href="https://github.com/KyleBing/wubi-dict-editor-web">https://github.com/KyleBing/wubi-dict-editor-web</a></i></p>
                                 <p>home: <i><a href="https://kylebing.cn">https://kylebing.cn</a></i></p>
                             </div>
