@@ -195,8 +195,9 @@ export default {
             this.filterCharacterLength = parseInt(length)
             this.words = this.dict.getWordsLengthOf(length)
         },
-        checkRepetition(includeCharacter){
-            this.words = this.dict.getRepetitionWords(includeCharacter)
+        // 查重
+        checkRepetition(includeCharacter, isWithAllRepeatWord){
+            this.words = this.dict.getRepetitionWords(includeCharacter, isWithAllRepeatWord)
         },
 
         select(index, wordId, event){

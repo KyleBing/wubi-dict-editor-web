@@ -7,7 +7,7 @@ module.exports = {
   outputDir: '../wubi-dict-editor-web',
   configureWebpack: config => {
     if (process.env.NODE_ENV === 'production'){
-      let packTimeString = new Moment().format('YYYYMMDDHHmmss') // 打包时间
+      let packTimeString = new Moment().format('YYYY-MM-DD') // 打包时间
       let plugins = []
       plugins.push(
           new FileManagerPlugin({
@@ -16,7 +16,7 @@ module.exports = {
                 // mkdir: ['./archive'], // 新建 ./archive 目录
                 archive: [
                   // 打包 ./dist 到 ./archive/dist-datetime.zip 压缩文件中，压缩包中不带 dist 外壳
-                  {source: '../diary/', destination: `../diary-${packTimeString}.zip`},
+                  {source: '../wubi-dict-editor-web/', destination: `../wubi-dict-editor-web-${packTimeString}.zip`},
                 ]
               }
             }
