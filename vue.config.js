@@ -13,14 +13,24 @@ module.exports = {
           new FileManagerPlugin({
             events: {
               onEnd: {
-                // mkdir: ['./archive'], // 新建 ./archive 目录
+                mkdir: ['./archive'], // 新建 ./archive 目录
                 archive: [
-                  // 打包 ./dist 到 ./archive/dist-datetime.zip 压缩文件中，压缩包中不带 dist 外壳
-                  {source: '../wubi-dict-editor-web/', destination: `../wubi-dict-editor-web-${packTimeString}.zip`},
+                  // 打包 压缩包中不带 dist 外壳
+                  {
+                    source: '../wubi-dict-editor-web',
+                    destination: `./archive/wubi-dict-editor-web-${packTimeString}.zip`,
+                    format: 'zip',
+                    options: {
+                      gzipOptions: {
+                        level: 1,
+                      },
+                    }
+                  },
                 ]
               }
             }
           })
+
       )
       config.plugins = config.plugins.concat(plugins) // 将新建的 plugin 添加到原 config 中的 plugin 中
     }
