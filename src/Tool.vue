@@ -106,6 +106,16 @@
                 </section>
 
                 <section>
+                    <div class="title">选择 & 排序</div>
+                    <div class="content btn-list">
+                        <div class="btn-item"><div @click="selectAll" ref="domBtnSelectAll" class="btn btn-primary">全选</div></div>
+                        <div class="btn-item"><div @click="resetInputs" class="btn btn-primary">清选</div></div>
+                        <div class="btn-item"><div @click="sort" class="btn btn-primary">排序</div></div>
+                        <div class="btn-item"><div @click="shuffleAll" class="btn btn-primary">全部乱序</div></div>
+                    </div>
+                </section>
+
+                <section>
                     <div class="title">查重 - 全部</div>
                     <div class="content">
                         <div class="btn-list">
@@ -285,9 +295,6 @@
         <div class="footer">
             <div class="footer-toolbar">
                 <div class="link-list">
-                    <div class="link" ref="domBtnSelectAll" @click="selectAll">全选</div>
-                    <div class="link" @click="resetInputs">清选</div>
-                    <div class="link" @click="sort">排序</div>
                     <div class="link origin" @click="openFileInNewTab">{{ dict.fileName }}</div>
                 </div>
                 <div class="info-list">

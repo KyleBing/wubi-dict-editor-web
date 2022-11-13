@@ -1,4 +1,4 @@
-import {shakeDom, shakeDomFocus, log} from './lib/Utility'
+import {shakeDom, shakeDomFocus, log, shuffle} from './lib/Utility'
 import {IS_IN_DEVELOP} from './lib/Global'
 
 import DictOther from './lib/DictOther'
@@ -243,6 +243,13 @@ export default {
             this.words.sort((a,b) => a.code < b.code ? -1: 1)
             this.tipNotice('排序完成')
             log(`排序用时 ${new Date().getTime() - startPoint} ms`)
+        },
+        // 全文乱序
+        shuffleAll(){
+            this.words = shuffle(this.words)
+            // 只是为了让其响应数组数据的变化
+            this.words.push(new Word(19910123, 'gutu', '邴新科', 999, '临时词条'))
+            this.words.pop()
         },
         enterKeyPressed(){
             this.addNewWord()
@@ -516,7 +523,7 @@ export default {
             if (newValue.length === 0){
                 this.showDropdown = false
             }
-            log('已选词条id: ', JSON.stringify(newValue))
+            // log('已选词条id: ', JSON.stringify(newValue))
         },
         showDropdown(newValue){
             if (!newValue){ // 窗口关闭时，重置 index

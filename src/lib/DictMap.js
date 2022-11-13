@@ -68,7 +68,10 @@ class DictMap {
             let phraseCode = ''
             switch (decodeArray.length){
                 case 0:
+                    break;
                 case 1:
+                    phraseCode =
+                        decodeArray[0]
                     break
                 case 2: // 取一的前二码，二的前二码
                     phraseCode =
