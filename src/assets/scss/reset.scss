@@ -37,20 +37,24 @@ tt {
 }
 ::-webkit-scrollbar {
     z-index: 50;
-    width: 10px;
-    height: 3px;
+    width: 20px;
 }
 ::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0);
 }
 ::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 5px;
+    -webkit-border-radius: 15px;
     border: 1px solid rgba(0,0,0,0.15);
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
     background-color: rgba(0, 0, 0, 0.05);
     transition: all .2s;
-    height: 20px;
+    min-height: 50px;
+    &:hover{
+        border-color: $color-main;
+        background-color: $bg-highlight;
+        cursor: pointer;
+    }
 }
 :hover::-webkit-scrollbar-thumb {
     transition: all .2s;
