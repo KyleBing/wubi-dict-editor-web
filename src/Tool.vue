@@ -56,21 +56,7 @@
                  :style="`height: ${heightContent}px`"
             >
 
-                <section>
-                    <div class="title">码表读取</div>
-                    <div class="content">
-                        <div class="load-list">
-                            <input @change="loadFileContent" type="file" id="fileSelector" class="hidden">
-                            <label class="btn btn-ellipsis btn-orange btn-load" for="fileSelector" >
-                                {{ dict.fileName || '选择码表文件' }}
-                            </label>
 
-                            <div class="btn-item ml-2">
-                                <div class="btn btn-primary" @click="reloadFileContent">重新载入</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
 
                 <section>
                     <div class="title">码表格式</div>
@@ -89,6 +75,22 @@
                         <div class="btn-list">
                             <div class="btn-item" v-for="item in seperatorArray" :key="item.name">
                                 <div :class="['btn btn-primary', {'btn-blue': seperatorRead === item.value}]" @click="seperatorRead = item.value">{{item.name}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="title">码表读取</div>
+                    <div class="content">
+                        <div class="load-list">
+                            <input @change="loadFileContent" type="file" id="fileSelector" class="hidden">
+                            <label class="btn btn-ellipsis btn-orange btn-load" for="fileSelector" >
+                                {{ dict.fileName || '选择码表文件' }}
+                            </label>
+
+                            <div class="btn-item ml-2">
+                                <div class="btn btn-primary" @click="reloadFileContent">重新载入</div>
                             </div>
                         </div>
                     </div>
