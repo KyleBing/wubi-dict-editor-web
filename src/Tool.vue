@@ -243,7 +243,7 @@
                                 <p>更新：<i>2022.01.23</i></p>
                                 <p>客户端版: <i><a href="https://github.com/KyleBing/wubi-dict-editor">https://github.com/KyleBing/wubi-dict-editor</a></i></p>
                                 <p>github: <i><a href="https://github.com/KyleBing/wubi-dict-editor-web">https://github.com/KyleBing/wubi-dict-editor-web</a></i></p>
-                                <p>home: <i><a href="https://kylebing.cn">https://kylebing.cn</a></i></p>
+                                <p>home: <i><a href="http://kylebing.cn">http://kylebing.cn</a></i></p>
                             </div>
                         </div>
                     </div>
