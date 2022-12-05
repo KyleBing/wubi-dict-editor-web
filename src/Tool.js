@@ -54,7 +54,8 @@ export default {
                 {name: '一码多词', value: 'cww',},
                 {name: '一码一词', value: 'cw',},
                 {name: '一词一码', value: 'wc',},
-                {name: '纯词', value: 'w',}
+                {name: '纯词', value: 'w',},
+                {name: 'Rime自造词码表', value: 'rime_auto',}
             ], // 码表格式数组
             filterCharacterLength: 0, // 筛选词条字数默认值
             filterCharacterLengthArray: [
@@ -198,6 +199,12 @@ export default {
         // 查重
         checkRepetition(includeCharacter, isWithAllRepeatWord){
             this.words = this.dict.getRepetitionWords(includeCharacter, isWithAllRepeatWord)
+        },
+
+        // 去除权重为 0 的词条
+        removePriority0(){
+            this.dict.wordsOrigin = this.dict.wordsOrigin.filter(item => item.priority !== '0')
+            this.words = this.dict.wordsOrigin
         },
 
         select(index, wordId, event){

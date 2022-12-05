@@ -40,7 +40,7 @@
             <div class="btn btn-primary" @click="addNewWord">添加</div>
             <div class="btn btn-primary" @click="search">搜索</div>
             <div class="btn btn-roseo" v-show="chosenWordIdArray.length > 0" @click="deleteWords">删除</div>
-            <p class="notice">显示格式：<b>编码</b> - 词条 - 序号 - id</p>
+            <p class="notice">显示格式：<b>编码</b> - 词条 - 权重 - 序号 - id</p>
 
             <template v-if="IS_IN_DEVELOP">
 
@@ -55,8 +55,6 @@
             <div class="tool-panel"
                  :style="`height: ${heightContent}px`"
             >
-
-
 
                 <section>
                     <div class="title">码表格式</div>
@@ -145,6 +143,16 @@
                     </div>
                 </section>
 
+                <section>
+                    <div class="title">操作</div>
+                    <div class="content">
+                        <div class="btn-list">
+                            <div class="btn-item">
+                                <div class="btn btn-primary" @click="removePriority0(true, false)">去除权重为 0 的词条</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
                 <hr>
 

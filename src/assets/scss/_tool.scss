@@ -43,6 +43,13 @@ hr{
       margin-bottom: 5px;
       font-weight: bold;
       color: $text-title;
+      &.green{color: $green;}
+      &.roseo{color: $roseo;}
+      &.blue{color: $blue;}
+      &.purple{color: $purple;}
+      &.red{color: $red;}
+      &.yellow{color: $yellow;}
+      &.orange{color: $orange;}
     }
     .content {
       @include border-radius(5px);
@@ -78,7 +85,8 @@ hr{
   justify-content: flex-start;
   margin-bottom: 10px;
   .btn-item {
-    margin-right: 10px;
+    margin-bottom: 3px;
+    margin-right: 5px;
   }
   &:last-child{
     margin-bottom: 0;
